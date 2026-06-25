@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #f7f9fc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar-custom {
+            background-color: #6c8ef5;
+            padding: 12px 20px;
+            border-radius: 0 0 12px 12px;
+            margin-bottom: 20px;
+        }
+
+        .navbar-custom a {
+            color: white;
+            font-weight: 600;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+
+        .navbar-custom a:hover {
+            text-decoration: underline;
+        }
+
+        .card {
+            border-radius: 12px;
+            border: none;
+        }
+
+        .btn {
+            border-radius: 8px;
+        }
+
+        h1, h2, h3 {
+            color: #4a4a4a;
+            font-weight: 600;
+        }
+
+        .table th {
+            background-color: #6c8ef5 !important;
+            color: white;
+        }
+
+        .table td {
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar-custom">
+    <a href="/">Acasă</a>
+
+    {% if session.get("educator_id") %}
+        <a href="/educator">Panou Educator</a>
+        <a href="/logout_educator">Logout</a>
+    {% endif %}
+
+    {% if session.get("parinte_id") %}
+        <a href="/parinte">Panou Părinte</a>
+        <a href="/logout_parinte">Logout</a>
+    {% endif %}
+</div>
+
+<!-- CONTENT -->
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

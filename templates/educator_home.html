@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Panou Educator{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center mb-4">Panou Educator</h1>
+
+<!-- MENIU ZIUA CURENTĂ -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h3 class="card-title">Meniul de azi</h3>
+
+        {% if meniu_azi %}
+            <form method="POST" action="/update_meniu_azi">
+
+                <label>Mic dejun</label>
+                <input type="text" name="mic_dejun" class="form-control"
+                       value="{{ meniu_azi.mic_dejun }}">
+
+                <label class="mt-2">Prânz</label>
+                <input type="text" name="pranz" class="form-control"
+                       value="{{ meniu_azi.pranz }}">
+
+                <label class="mt-2">Gustare</label>
+                <input type="text" name="gustare" class="form-control"
+                       value="{{ meniu_azi.gustare }}">
+
+                <button class="btn btn-primary mt-3">Salvează</button>
+            </form>
+        {% else %}
+            <p>Nu există meniu pentru azi.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- LISTA COPIILOR -->
+<div class="card shadow">
+    <div class="card-body">
+        <h3 class="card-title">Copii și consumul lor</h3>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nume copil</th>
+                    <th>Consum total azi</th>
+                    <th>Detalii</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for copil in copii %}
+                <tr>
+                    <td>{{ copil.nume }}</td>
+
+                    <td>
+                        {% set c = consumuri.get(copil.id) %}
+                        {% if c %}
+                            {{ c.a_mancat_mic_dejun + c.a_mancat_pranz + c.a_mancat_gustare }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a href="/copil/{{ copil.id }}" class="btn btn-primary btn-sm">
+                            Vezi consum
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

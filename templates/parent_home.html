@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Panou Părinte{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center mb-4">Panou Părinte</h1>
+
+<!-- Card copil -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h3 class="card-title">Copilul tău</h3>
+        <p class="lead">{{ copil.nume }}</p>
+    </div>
+</div>
+
+<form method="POST" action="/marcheaza_absenta">
+    <button class="btn btn-danger mt-3">Copilul lipsește azi</button>
+</form>
+
+<!-- Card meniu azi -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h3 class="card-title">Meniul de azi</h3>
+
+        {% if meniu_azi %}
+            <p><strong>{{ meniu_azi.data }}</strong></p>
+
+            <p>Mic dejun: {{ meniu_azi.mic_dejun }}
+                <span class="badge bg-{% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_mic_dejun %}success{% else %}danger{% endif %}">
+                    {% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_mic_dejun %}
+                        a mâncat
+                    {% else %}
+                        nu a mâncat
+                    {% endif %}
+                </span>
+            </p>
+
+            <p>Prânz: {{ meniu_azi.pranz }}
+                <span class="badge bg-{% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_pranz %}success{% else %}danger{% endif %}">
+                    {% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_pranz %}
+                        a mâncat
+                    {% else %}
+                        nu a mâncat
+                    {% endif %}
+                </span>
+            </p>
+
+            <p>Gustare: {{ meniu_azi.gustare }}
+                <span class="badge bg-{% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_gustare %}success{% else %}danger{% endif %}">
+                    {% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_gustare %}
+                        a mâncat
+                    {% else %}
+                        nu a mâncat
+                    {% endif %}
+                </span>
+            </p>
+
+        {% else %}
+            <p>Nu există meniu pentru ziua de azi.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

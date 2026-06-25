@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Bine ați venit{% endblock %}
+
+{% block content %}
+
+<!-- Pagina de început -->
+<div class="row justify-content-center">
+    <div class="col-md-6">
+
+        <div class="card shadow-lg">
+            <div class="card-body text-center">
+
+                <h1 class="mb-4">Bine ați venit la Grădiniță!</h1>
+                <p class="lead">Alegeți tipul de autentificare:</p>
+
+                <a href="/login_educator" class="btn btn-primary btn-lg w-100 mb-3">
+                    Login Educator
+                </a>
+
+                <a href="/login_parinte" class="btn btn-success btn-lg w-100">
+                    Login Părinte
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

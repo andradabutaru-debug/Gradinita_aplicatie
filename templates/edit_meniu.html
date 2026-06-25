@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Editare Meniu{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center mb-4">Editare meniu — {{ meniu.data }}</h1>
+
+<div class="card shadow">
+    <div class="card-body">
+
+        <form method="POST">
+
+            <!-- Mic dejun -->
+            <div class="mb-3">
+                <label class="form-label">Mic dejun</label>
+                <input type="text" name="mic_dejun" class="form-control" value="{{ meniu.mic_dejun }}">
+            </div>
+
+            <!-- Prânz -->
+            <div class="mb-3">
+                <label class="form-label">Prânz</label>
+                <input type="text" name="pranz" class="form-control" value="{{ meniu.pranz }}">
+            </div>
+
+            <!-- Gustare -->
+            <div class="mb-3">
+                <label class="form-label">Gustare</label>
+                <input type="text" name="gustare" class="form-control" value="{{ meniu.gustare }}">
+            </div>
+
+            <button class="btn btn-success w-100">Salvează</button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

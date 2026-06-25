@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Raport consum copii{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center mb-4">Raport consum copii</h1>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Copil</th>
+            {% for m in meniuri %}
+            <th>{{ m.data }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for copil in copii %}
+        <tr>
+            <td><strong>{{ copil.nume }}</strong></td>
+
+            {% for m in meniuri %}
+            <td>
+                {% set c = consumuri.get(copil.id, {}).get(m.id) %}
+
+                Mic dejun:
+                {% if c and c.a_mancat_mic_dejun %}
+                    <span class="text-success">✔</span>
+                {% else %}
+                    <span class="text-danger">✘</span>
+                {% endif %}
+                <br>
+
+                Prânz:
+                {% if c and c.a_mancat_pranz %}
+                    <span class="text-success">✔</span>
+                {% else %}
+                    <span class="text-danger">✘</span>
+                {% endif %}
+                <br>
+
+                Gustare:
+                {% if c and c.a_mancat_gustare %}
+                    <span class="text-success">✔</span>
+                {% else %}
+                    <span class="text-danger">✘</span>
+                {% endif %}
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

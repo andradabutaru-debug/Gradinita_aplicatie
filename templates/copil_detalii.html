@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Detalii copil{% endblock %}
+
+{% block content %}
+
+<h1 class="text-center mb-4">Detalii copil</h1>
+
+<!-- Card copil -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h3 class="card-title">{{ copil.nume }}</h3>
+    </div>
+</div>
+
+<!-- Card meniu azi -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <h3 class="card-title">Meniul de azi</h3>
+
+        {% if meniu_azi %}
+            <p><strong>{{ meniu_azi.data }}</strong></p>
+
+            <p>Mic dejun: {{ meniu_azi.mic_dejun }}</p>
+            <p>Prânz: {{ meniu_azi.pranz }}</p>
+            <p>Gustare: {{ meniu_azi.gustare }}</p>
+
+        {% else %}
+            <p>Nu există meniu pentru azi.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Afișăm dacă copilul lipsește -->
+{% if consum and consum.lipseste %}
+<div class="alert alert-warning">
+    Copilul lipsește azi.
+</div>
+{% endif %}
+
+<!-- Formular modificare consum (doar dacă nu lipsește) -->
+<form method="POST" action="/update_consum/{{ copil.id }}">
+    <h4 class="mt-4">Modifică consumul de azi</h4>
+
+    <label class="mt-2">Mic dejun</label>
+    <select name="mic_dejun" class="form-select">
+        <option value="0"  {% if consum and consum.a_mancat_mic_dejun == 0 %}selected{% endif %}>0%</option>
+        <option value="25" {% if consum and consum.a_mancat_mic_dejun == 25 %}selected{% endif %}>25%</option>
+        <option value="50" {% if consum and consum.a_mancat_mic_dejun == 50 %}selected{% endif %}>50%</option>
+        <option value="75" {% if consum and consum.a_mancat_mic_dejun == 75 %}selected{% endif %}>75%</option>
+        <option value="100" {% if consum and consum.a_mancat_mic_dejun == 100 %}selected{% endif %}>100%</option>
+    </select>
+
+    <label class="mt-3">Prânz</label>
+    <select name="pranz" class="form-select">
+        <option value="0"  {% if consum and consum.a_mancat_pranz == 0 %}selected{% endif %}>0%</option>
+        <option value="25" {% if consum and consum.a_mancat_pranz == 25 %}selected{% endif %}>25%</option>
+        <option value="50" {% if consum and consum.a_mancat_pranz == 50 %}selected{% endif %}>50%</option>
+        <option value="75" {% if consum and consum.a_mancat_pranz == 75 %}selected{% endif %}>75%</option>
+        <option value="100" {% if consum and consum.a_mancat_pranz == 100 %}selected{% endif %}>100%</option>
+    </select>
+
+    <label class="mt-3">Gustare</label>
+    <select name="gustare" class="form-select">
+        <option value="0"  {% if consum and consum.a_mancat_gustare == 0 %}selected{% endif %}>0%</option>
+        <option value="25" {% if consum and consum.a_mancat_gustare == 25 %}selected{% endif %}>25%</option>
+        <option value="50" {% if consum and consum.a_mancat_gustare == 50 %}selected{% endif %}>50%</option>
+        <option value="75" {% if consum and consum.a_mancat_gustare == 75 %}selected{% endif %}>75%</option>
+        <option value="100" {% if consum and consum.a_mancat_gustare == 100 %}selected{% endif %}>100%</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary mt-4">Salvează</button>
+</form>
+
+{% endblock %}
