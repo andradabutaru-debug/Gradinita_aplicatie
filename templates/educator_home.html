@@ -1,77 +1,95 @@
 {% extends "base.html" %}
 
-{% block title %}Panou Educator{% endblock %}
+{% block title %}Pagina educator{% endblock %}
 
 {% block content %}
 
-<h1 class="text-center mb-4">Panou Educator</h1>
+<h1 class="text-center mb-4">Meniu și consum copii</h1>
 
-<!-- MENIU ZIUA CURENTĂ -->
-<div class="card shadow mb-4">
-    <div class="card-body">
-        <h3 class="card-title">Meniul de azi</h3>
+{% if meniu_azi %}
+    <h3 class="mb-3">Meniul zilei ({{ meniu_azi.data }})</h3>
 
-        {% if meniu_azi %}
-            <form method="POST" action="/update_meniu_azi">
+    <ul>
+        <li><strong>Mic dejun:</strong> {{ meniu_azi.mic_dejun }}</li>
+        <li><strong>Prânz:</strong> {{ meniu_azi.pranz }}</li>
+        <li><strong>Gustare:</strong> {{ meniu_azi.gustare }}</li>
+    </ul>
 
-                <label>Mic dejun</label>
-                <input type="text" name="mic_dejun" class="form-control"
-                       value="{{ meniu_azi.mic_dejun }}">
+    <hr>
 
-                <label class="mt-2">Prânz</label>
-                <input type="text" name="pranz" class="form-control"
-                       value="{{ meniu_azi.pranz }}">
+    <h4 class="mt-3 mb-2">Modifică meniul zilei</h4>
 
-                <label class="mt-2">Gustare</label>
-                <input type="text" name="gustare" class="form-control"
-                       value="{{ meniu_azi.gustare }}">
+    <form action="/update_meniu_azi" method="POST" class="mb-4">
+        <div class="mb-2">
+            <label for="mic_dejun" class="form-label">Mic dejun</label>
+            <input type="text" id="mic_dejun" name="mic_dejun"
+                   class="form-control"
+                   value="{{ meniu_azi.mic_dejun }}">
+        </div>
 
-                <button class="btn btn-primary mt-3">Salvează</button>
-            </form>
-        {% else %}
-            <p>Nu există meniu pentru azi.</p>
-        {% endif %}
-    </div>
-</div>
+        <div class="mb-2">
+            <label for="pranz" class="form-label">Prânz</label>
+            <input type="text" id="pranz" name="pranz"
+                   class="form-control"
+                   value="{{ meniu_azi.pranz }}">
+        </div>
 
-<!-- LISTA COPIILOR -->
-<div class="card shadow">
-    <div class="card-body">
-        <h3 class="card-title">Copii și consumul lor</h3>
+        <div class="mb-2">
+            <label for="gustare" class="form-label">Gustare</label>
+            <input type="text" id="gustare" name="gustare"
+                   class="form-control"
+                   value="{{ meniu_azi.gustare }}">
+        </div>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nume copil</th>
-                    <th>Consum total azi</th>
-                    <th>Detalii</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for copil in copii %}
-                <tr>
-                    <td>{{ copil.nume }}</td>
+        <button type="submit" class="btn btn-success mt-2">
+            Salvează meniul
+        </button>
+    </form>
 
-                    <td>
-                        {% set c = consumuri.get(copil.id) %}
-                        {% if c %}
-                            {{ c.a_mancat_mic_dejun + c.a_mancat_pranz + c.a_mancat_gustare }}%
-                        {% else %}
-                            0%
-                        {% endif %}
-                    </td>
+{% else %}
+    <p class="text-danger">Nu există meniu pentru azi.</p>
+{% endif %}
 
-                    <td>
-                        <a href="/copil/{{ copil.id }}" class="btn btn-primary btn-sm">
-                            Vezi consum
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<hr>
 
-    </div>
-</div>
+<h2 class="mt-4 mb-3">Copii</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Copil</th>
+            <th>Mic dejun</th>
+            <th>Prânz</th>
+            <th>Gustare</th>
+            <th>Media</th>
+            <th>Detalii</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for copil in copii %}
+        <tr>
+            <td><strong>{{ copil.nume }}</strong></td>
+
+            {# consumuri[copil.id] este fie dict {"obj":..., "media":...} fie None #}
+            {% set c = consumuri.get(copil.id) %}
+
+            {% if c %}
+                {% set obj = c.obj %}
+                <td>{{ obj.a_mancat_mic_dejun }}%</td>
+                <td>{{ obj.a_mancat_pranz }}%</td>
+                <td>{{ obj.a_mancat_gustare }}%</td>
+                <td><strong>{{ c.media }}%</strong></td>
+            {% else %}
+                <td colspan="4" class="text-center text-danger">Nu există date</td>
+            {% endif %}
+
+            <td>
+                <a href="/copil/{{ copil.id }}" class="btn btn-primary btn-sm">Vezi</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

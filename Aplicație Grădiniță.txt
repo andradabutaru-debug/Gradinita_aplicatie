@@ -1,0 +1,18 @@
+ Aplicație Grădiniță 
+
+
+#Funcționalități
+
+- Autentificare educator: 
+	- Gestionare meniu zilnic
+	- Vizualizare listă copii si posibilitatea de a modifica pentru fiecare cat a consumat din fiecare fel
+	- Înregistrare consumație pentru fiecare copil (procente)
+	- Functia de log out
+	- Posibilitatea de a vedea daca un copil este absent in ziua in curs 
+- Autentificare parinte:
+	- Posibilitatea de a vedea cat a mancat din fiecare fel
+	- Posibilitatea de a marca daca copilul lipseste in ziua in curs
+
+
+Baza  de date nu este inclusa - se genereaza automat. 
+Pentru logare am folosit educator1 - parola123 si parinte1 - parola 123 (am inclus 25 de copii in grupa)

@@ -1,41 +1,48 @@
 from flask import Blueprint, session, render_template, redirect
 from models import Parinte, Copil, Meniu, ConsumatieCopil, db
-from datetime import datetime, date
+from datetime import date
 
 parent_bp = Blueprint("parinte", __name__)
 
 @parent_bp.route("/parinte")
 def parinte_home():
-    # Verificăm dacă părintele este logat
     if "parinte_id" not in session:
         return "Nu esti logat ca parinte"
 
-    # Luăm părintele logat
     parinte = Parinte.query.get(session["parinte_id"])
-
-    # Luăm copilul asociat părintelui
     copil = Copil.query.get(parinte.copil_id)
 
-    from datetime import date
-
     azi = date.today()
-
-    # Luăm DOAR meniul de azi
     meniu_azi = Meniu.query.filter_by(data=azi).first()
 
-    # Luăm consumul copilului
+    # consumuri = dict cu meniu_id -> consum
     consumuri = {
         c.meniu_id: c
         for c in ConsumatieCopil.query.filter_by(copil_id=copil.id).all()
     }
 
-    # Trimitem datele către template-ul corect
+    # consumul de azi
+    consum_azi = consumuri.get(meniu_azi.id) if meniu_azi else None
+
+    media = None
+    if consum_azi:
+        media = (
+            consum_azi.a_mancat_mic_dejun +
+            consum_azi.a_mancat_pranz +
+            consum_azi.a_mancat_gustare
+        ) / 3
+        media = min(media, 100)
+        media = round(media)
+
     return render_template(
         "parent_home.html",
         copil=copil,
         meniu_azi=meniu_azi,
-        consumuri=consumuri
+        consum_azi=consum_azi,
+        media=media
     )
+
+
 @parent_bp.route("/marcheaza_absenta", methods=["POST"])
 def marcheaza_absenta():
     if "parinte_id" not in session:
@@ -57,6 +64,7 @@ def marcheaza_absenta():
     db.session.commit()
 
     return redirect("/parinte")
+
 
 @parent_bp.route("/logout_parinte")
 def logout_parinte():

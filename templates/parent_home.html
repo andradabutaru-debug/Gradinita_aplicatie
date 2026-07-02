@@ -14,47 +14,50 @@
     </div>
 </div>
 
+<!-- Buton marchează absența -->
 <form method="POST" action="/marcheaza_absenta">
-    <button class="btn btn-danger mt-3">Copilul lipsește azi</button>
+    <button class="btn btn-danger mt-3"
+            {% if consum_azi and consum_azi.lipseste %}disabled{% endif %}>
+        Copilul lipsește azi
+    </button>
 </form>
 
+{% if consum_azi and consum_azi.lipseste %}
+    <div class="alert alert-warning mt-3">
+        Ai marcat deja copilul ca absent azi.
+    </div>
+{% endif %}
+
 <!-- Card meniu azi -->
-<div class="card shadow mb-4">
+<div class="card shadow mb-4 mt-4">
     <div class="card-body">
         <h3 class="card-title">Meniul de azi</h3>
 
         {% if meniu_azi %}
             <p><strong>{{ meniu_azi.data }}</strong></p>
 
-            <p>Mic dejun: {{ meniu_azi.mic_dejun }}
-                <span class="badge bg-{% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_mic_dejun %}success{% else %}danger{% endif %}">
-                    {% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_mic_dejun %}
-                        a mâncat
-                    {% else %}
-                        nu a mâncat
-                    {% endif %}
-                </span>
-            </p>
+            {% if consum_azi and not consum_azi.lipseste %}
+                <p><strong>Mic dejun:</strong> {{ meniu_azi.mic_dejun }} —
+                    <span class="text-primary">{{ consum_azi.a_mancat_mic_dejun }}%</span>
+                </p>
 
-            <p>Prânz: {{ meniu_azi.pranz }}
-                <span class="badge bg-{% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_pranz %}success{% else %}danger{% endif %}">
-                    {% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_pranz %}
-                        a mâncat
-                    {% else %}
-                        nu a mâncat
-                    {% endif %}
-                </span>
-            </p>
+                <p><strong>Prânz:</strong> {{ meniu_azi.pranz }} —
+                    <span class="text-primary">{{ consum_azi.a_mancat_pranz }}%</span>
+                </p>
 
-            <p>Gustare: {{ meniu_azi.gustare }}
-                <span class="badge bg-{% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_gustare %}success{% else %}danger{% endif %}">
-                    {% if consumuri.get(meniu_azi.id) and consumuri[meniu_azi.id].a_mancat_gustare %}
-                        a mâncat
-                    {% else %}
-                        nu a mâncat
-                    {% endif %}
-                </span>
-            </p>
+                <p><strong>Gustare:</strong> {{ meniu_azi.gustare }} —
+                    <span class="text-primary">{{ consum_azi.a_mancat_gustare }}%</span>
+                </p>
+
+                <hr>
+                <p><strong>Media zilei:</strong> {{ media }}%</p>
+
+            {% elif consum_azi and consum_azi.lipseste %}
+                <p class="text-warning">Copilul lipsește azi.</p>
+
+            {% else %}
+                <p class="text-danger">Nu există date despre cât a mâncat copilul azi.</p>
+            {% endif %}
 
         {% else %}
             <p>Nu există meniu pentru ziua de azi.</p>

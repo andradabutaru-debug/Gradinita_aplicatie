@@ -25,27 +25,20 @@
             <td>
                 {% set c = consumuri.get(copil.id, {}).get(m.id) %}
 
-                Mic dejun:
-                {% if c and c.a_mancat_mic_dejun %}
-                    <span class="text-success">✔</span>
-                {% else %}
-                    <span class="text-danger">✘</span>
-                {% endif %}
-                <br>
+                {% if c %}
+                    {% set obj = c.obj %}
+                    {% set media = c.media %}
 
-                Prânz:
-                {% if c and c.a_mancat_pranz %}
-                    <span class="text-success">✔</span>
-                {% else %}
-                    <span class="text-danger">✘</span>
-                {% endif %}
-                <br>
+                    Mic dejun: {{ obj.a_mancat_mic_dejun }}% <br>
+                    Prânz: {{ obj.a_mancat_pranz }}% <br>
+                    Gustare: {{ obj.a_mancat_gustare }}% <br>
 
-                Gustare:
-                {% if c and c.a_mancat_gustare %}
-                    <span class="text-success">✔</span>
+                    <hr style="margin: 4px 0;">
+
+                    <strong>Media: {{ media }}%</strong>
+
                 {% else %}
-                    <span class="text-danger">✘</span>
+                    <span class="text-danger">Nu există date</span>
                 {% endif %}
             </td>
             {% endfor %}
